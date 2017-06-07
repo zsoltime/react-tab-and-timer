@@ -30,6 +30,12 @@ class Menu extends React.Component {
   }
 }
 
+Menu.propTypes = {
+  menuItems: React.PropTypes.arrayOf(
+    React.PropTypes.string.isRequired,
+  ).isRequired,
+};
+
 ReactDOM.render(
   <Menu menuItems={['Home', 'Services', 'About Us', 'Contact Us']} />,
   document.getElementById('menu')
@@ -81,6 +87,10 @@ class Hello extends React.Component {
   }
 }
 
+Hello.propTypes = {
+  word: React.PropTypes.string.isRequired,
+};
+
 ReactDOM.render(
   <Hello word="HELLO REACTJS!" />,
   document.getElementById('hello')
@@ -115,7 +125,15 @@ class Timer extends React.Component {
   }
 }
 
+Timer.defaultProps = {
+  start: Date.now(),
+};
+
+Timer.propTypes = {
+  start: React.PropTypes.number,
+};
+
 ReactDOM.render(
-  <Timer start={Date.now()} />,
+  <Timer />,
   document.getElementById('timer')
 );
