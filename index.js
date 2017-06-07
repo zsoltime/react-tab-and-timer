@@ -4,16 +4,16 @@ class Menu extends React.Component {
     this.state = {
       active: 0,
     };
-    this.menuItems = ['Home', 'Services', 'About Us', 'Contact Us'];
   }
   clickedOn(active) {
     this.setState({ active });
   }
   render() {
-    const tabs = this.menuItems.map((item, i) => (
+    const activeItem = this.props.menuItems[this.state.active];
+    const tabs = this.props.menuItems.map((item, i) => (
       <li
         key={i}
-        className={this.state.active === i
+        className={(this.state.active === i)
           ? 'menu__item menu__item--active'
           : 'menu__item'}
         onClick={() => this.clickedOn(i)}
@@ -24,61 +24,67 @@ class Menu extends React.Component {
         <ul className="menu">
           {tabs}
         </ul>
-        <div className="info">Active menu item: {this.menuItems[this.state.active]}</div>
+        <div className="info">Active menu item: {activeItem}</div>
       </nav>
     );
   }
 }
 
-ReactDOM.render(<Menu />, document.getElementById('menu'));
+ReactDOM.render(
+  <Menu menuItems={['Home', 'Services', 'About Us', 'Contact Us']} />,
+  document.getElementById('menu')
+);
+
+const textToArray = str => str.split('').map(a => a.charCodeAt(0));
 
 class Hello extends React.Component {
   constructor(props) {
     super(props);
-    this.target = 'HELLO WORLD!';
-    this.start = this.target.replace(/[a-z]/gi, 'A');
+    this.start = this.props.word.replace(/[a-z]/gi, 'A');
     this.state = {
-      hello: {
-        code: this.textToArray(this.start),
-        text: this.start,
-      },
+      code: textToArray(this.start),
+      text: this.start,
     };
-  }
-  textToArray(str) {
-    return str.split('').map(a => a.charCodeAt(0));
+    this.changeLetter = this.changeLetter.bind(this);
   }
   componentDidMount() {
-    this.intervalID = setInterval(() => this.changeLetter(), 50);
+    this.intervalID = setInterval(this.changeLetter, 50);
   }
   componentWillUnmount() {
     clearInterval(this.intervalID);
   }
   changeLetter() {
-    let code = this.state.hello.code;
-    let text = this.state.hello.text;
-    if (this.target === text) {
+    let code = this.state.code;
+    let text = this.state.text;
+    if (this.props.word === text) {
       clearInterval(this.intervalID);
     }
-    for (let i = 0; i < this.target.length; i++) {
-      if (this.target.charCodeAt(i) !== code[i]) {
+    for (let i = 0; i < this.props.word.length; i++) {
+      if (this.props.word.charCodeAt(i) !== code[i]) {
         code[i] += 1;
         break;
       }
     }
     text = code.map(a => String.fromCharCode(a)).join('');
+
     this.setState({
-      hello: {
-        code,
-        text,
-      },
+      code,
+      text,
     });
   }
   render() {
-    return (<p className="hello">{this.state.hello.text}</p>);
+    return (
+      <p className="hello">
+        {this.state.text}
+      </p>
+    );
   }
 }
 
-ReactDOM.render(<Hello />, document.getElementById('hello'));
+ReactDOM.render(
+  <Hello word="HELLO REACTJS!" />,
+  document.getElementById('hello')
+);
 
 class Timer extends React.Component {
   constructor(props) {

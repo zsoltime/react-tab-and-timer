@@ -18,6 +18,7 @@ body {
 }
 
 .hello {
+  font-family: 'Source Code Pro', 'Segoe UI', Arial, 'Helvetica Neue', sans-serif;
   font-size: 2rem;
   font-weight: 900;
   letter-spacing: .25rem;
